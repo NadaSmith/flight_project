@@ -1,7 +1,7 @@
 const React = require('react');
 const DefaultLayout = require('../Default');
 
-class Index extends React.Component {
+class Details extends React.Component {
   render() {
     //make sure to receive the flights prop
     const { flights } = this.props;
@@ -10,24 +10,13 @@ class Index extends React.Component {
         <div>
             
             <div>
-            <a href='/flights/new'><button>Create a New Flight</button></a>
-            <h1>All Flights</h1>
-            <ul>
-                {flights.map(flight => (
-                    <li className={flight.departs < new Date() ? 'red-text' : ''} key={flight._id}>
-                        {flight.airline} Flight {flight.flightNo} | Departure: {flight.departs}
-                    </li>
-                ))}
-            </ul>
-            </div>
-            <div>
                 <h2>Flight Details</h2>
                 <p>Airline: {flight.airline}</p>
                 <p>Flight Number: {flight.flightNo}</p>
         
                 <h3>Destinations</h3>
                 <ul>
-                    {flight.destinations.map(destination => (
+                    {flight.destinations.slice().sort((a, b) => a.arrival - b.arrival).map(destination => (
                     <li key={destination._id}>
                         {destination.airport} - {destination.arrival}
                     </li>
@@ -37,7 +26,13 @@ class Index extends React.Component {
                 <h3>Add Destination</h3>
                 <form action={`/flights/${flight._id}/add-destination`} method="POST">
                     <label htmlFor="newAirport">New Destination Airport:</label>
-                    <input type="text" name="newAirport" id="newAirport" />
+                    <select name="newAirport" id="newAirport">
+                        <option value="AUS" disabled={flight.destinations.some(dest => dest.airport === 'AUS')}>AUS</option>
+                        <option value="DAL" disabled={flight.destinations.some(dest => dest.airport === 'DAL')}>DAL</option>
+                        <option value="LAX" disabled={flight.destinations.some(dest => dest.airport === 'LAX')}>LAX</option>
+                        <option value="SAN" disabled={flight.destinations.some(dest => dest.airport === 'SAN')}>SAX</option>
+                        <option value="SEA" disabled={flight.destinations.some(dest => dest.airport === 'SEA')}>SEA</option>
+                    </select>
                     <label htmlFor="newArrivalDate">New Arrival Date:</label>
                     <input type="datetime-local" name="newArrivalDate" id="newArrivalDate" />
                     <button type="submit">Add Destination</button>
@@ -49,4 +44,4 @@ class Index extends React.Component {
   }
 }
 
-module.exports = Index;
+module.exports = Details;

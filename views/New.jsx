@@ -7,6 +7,14 @@ class New extends React.Component {
             <DefaultLayout>
                 <h1>Add New Flight</h1>
                 <form action="/flights" method="POST">
+                    <label> Select Aiport:</label>
+                        <select for='airport' id='airport'>
+                            <option value="AUS">AUS</option>
+                            <option value="DAL">DAL</option>
+                            <option value="LAX">LAX</option>
+                            <option value="SAN">SAN</option>
+                            <option value="SEA">SEA</option>
+                        </select>
                     <fieldset>
                         <legend>Create a New Flight</legend>
                         <label>

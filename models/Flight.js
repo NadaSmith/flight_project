@@ -5,29 +5,16 @@
 const mongoose = require('../config/database');
 
 const { Schema, model } = mongoose;
+const Destination = require('./Destination');
 
 // make flight schema
 const flightsSchema = new Schema({
-    airline: {
+    airport: {
         type: String,
-        enum: ['American', 'Southwest', 'United'],
-        required: true
-    },
-    flightNo: {
-        type: Number,
-        required: true,
-        min: 10,
-        max: 9999
-    },
-    departs: {
-        type: Date,
-        required: true,
-        default: () => {
-            const oneYearFromNow = new Date();
-            oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
-            return oneYearFromNow;
-        }
-    }
+        enum: ['AUS', 'DAL', 'LAX', 'SAN', 'SEA'],
+        default: 'SAN'
+      },
+      destination: [destinationSchema]
 });
 
 // make flight model

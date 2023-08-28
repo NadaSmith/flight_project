@@ -53,7 +53,37 @@ router.post('/', (req, res) => {
 
 
 //SHOW ROUTE
+router.get('/:id', (req, res) => {
+    Flight.findById(req.params.id)
+      .then(flight => {
+        res.render('flightDetail', { flight });
+      })
+      .catch(error => {
+        console.error(error);
+        res.redirect('/flights');
+    });
+});
 
+
+// Add a new route to handle adding destinations
+router.post('/:id/add-destination', (req, res) => {
+    Flight.findById(req.params.id)
+      .then(flight => {
+        const newDestination = {
+          airport: req.body.newAirport,
+          arrival: new Date(req.body.newArrivalDate)
+        };
+        flight.destinations.push(newDestination);
+        return flight.save();
+      })
+      .then(savedFlight => {
+        res.redirect(`/flights/${savedFlight._id}`);
+      })
+      .catch(error => {
+        console.error(error);
+        res.redirect(`/flights/${req.params.id}`);
+      });
+  });
 
 //////////////////////////////////////////
 // Export the Router
