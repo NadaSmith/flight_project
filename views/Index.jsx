@@ -3,21 +3,20 @@ const DefaultLayout = require('../Default');
 
 class Index extends React.Component {
   render() {
+    //make sure to receive the flights prop
+    const { flights } = this.props;
     return (
       <DefaultLayout>
         <div>
             <a href='/flights/new'><button>Create a New Flight</button></a>
-          {
-            this.props.flights.map((flight) => (
-              <article>
-                <a href={`/flights/${flight._id}`}>
-                  <h2>
-                    { flight.name } costs { `$${flight.cost}` } and is { flight.calories } Calories!
-                  </h2>
-                </a>
-              </article>
-            ))
-          }
+            <h1>All Flights</h1>
+            <ul>
+                {flights.map(flight => (
+                    <li className={flight.departs < new Date() ? 'red-text' : ''} key={flight._id}>
+                        {flight.airline} Flight {flight.flightNo} | Departure: {flight.departs}
+                    </li>
+                ))}
+            </ul>
         </div>
       </DefaultLayout>
     )

@@ -2,12 +2,16 @@
 // Import Our Dependencies
 /////////////////////////////////////////////
 require("dotenv").config(); // Load ENV Variables
+const bodyParser = require('body-parser');
 const express = require("express"); // import express
 const morgan = require("morgan"); //import morgan
 const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 const path = require("path"); // built in node module we use to resolve paths more on this when we use it
 const Flight = require('./models/Flight.js'); // Adjust the path as needed
+const flights = require('./routes/flights.js');
+const database = require('./config/database');
+
 
 /////////////////////////////////////////////////
 // Create our Express Application Object 
@@ -21,8 +25,8 @@ app.set('view engine', 'jsx')
 /////////////////////////////////////////////////////
 app.use(morgan('tiny')); //logging
 app.use(methodOverride('_method')); //override for put and delete requests from forms
-app.use(express.urlencoded({ extended: true})); //parse data sent in the body to make it usable in our app
-app.use(express.static('public')); //serves files from public statically
+app.use(bodyParser.urlencoded({ extended: false})); //parse data sent in the body to make it usable in our app
+app.use(express.static(__dirname +'/public')); //serves files from public statically
 
 ////////////////////////////////////////////
 // Routes

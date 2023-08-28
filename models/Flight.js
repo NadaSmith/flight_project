@@ -6,14 +6,14 @@ const mongoose = require('../config/database');
 
 const { Schema, model } = mongoose;
 
-// make fruits schema
+// make flight schema
 const flightsSchema = new Schema({
     airline: String,
     flightNo: Number,
     departs: Date,
 });
 
-// make snack model
+// make flight model
 const Flight  = model('Flight', flightsSchema);
 
 module.exports = Flight;

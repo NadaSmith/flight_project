@@ -17,18 +17,20 @@ const router = express.Router();
 
 //INDEX ROUTE
 router.get('/', (req, res) => {
-    Flight.find({})
-      .then(foundFlight => {
-        res.render('flights/Index', {
-          flights: foundFlight
-        });
+    Flight.find().sort('departs')
+      .then(flights => {
+        res.render('flights/Index', { flights });
       })
       .catch(error => res.status(400).json({ error }))
 })
 
 //NEW ROUTE
 router.get('/new', (req, res) => {
-    res.render('flight/new');
+    //create a default departure date
+    const newFlight = new Flight ();
+    const departsDate = newFlight.departs.toISOString().slice(0, 16);
+
+    res.render('flight/new', { departsDate });
 })
 
 //DELETE ROUTE
@@ -38,9 +40,22 @@ router.get('/new', (req, res) => {
 
 
 //CREATE ROUTE
+router.post('/', (req, res) => {
+    const { airline, flightNo, departs } = req.body;
+    const newFlight = new Flight({ airline, flightNo, departs });
+    newFlight.save()
+      .then(data => res.redirect('/flights'))
+      .catch(error => res.status(400).json({ error }));
+});
 
 
 //EDIT ROUTE
 
 
 //SHOW ROUTE
+
+
+//////////////////////////////////////////
+// Export the Router
+//////////////////////////////////////////
+module.exports = router;
